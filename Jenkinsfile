@@ -3,9 +3,8 @@ pipeline {
 
     environment {
         FLUTTER_HOME = '/opt/flutter' // Flutter 설치 경로
-        PATH = "${FLUTTER_HOME}/bin:$PATH"
         ANDROID_HOME = '/opt/android-sdk' // Android SDK 설치 경로
-        PATH = "${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/cmdline-tools/latest/bin:$PATH"
+        PATH = "${FLUTTER_HOME}/bin:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools:$PATH"
     }
 
     stages {
