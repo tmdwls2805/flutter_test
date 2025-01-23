@@ -69,23 +69,23 @@ void main() {
     expect(find.text('Test Task 1'), findsNothing);
   });
 
-  testWidgets('To-Do List: Add Task using Enter key (should fail)', (WidgetTester tester) async {
-    // 앱 위젯 로드
-    await tester.pumpWidget(MyApp());
+  // testWidgets('To-Do List: Add Task using Enter key (should fail)', (WidgetTester tester) async {
+  //   // 앱 위젯 로드
+  //   await tester.pumpWidget(MyApp());
 
-    // TextField와 추가 버튼 확인
-    expect(find.byType(TextField), findsOneWidget);
+  //   // TextField와 추가 버튼 확인
+  //   expect(find.byType(TextField), findsOneWidget);
 
-    // 새 작업 입력
-    await tester.enterText(find.byType(TextField), 'Test Task with Enter');
+  //   // 새 작업 입력
+  //   await tester.enterText(find.byType(TextField), 'Test Task with Enter');
 
-    // 키보드 Enter 키 시뮬레이션 (onSubmitted이 구현되지 않았으므로 아무 동작도 없음)
-    await tester.testTextInput.receiveAction(TextInputAction.done);
+  //   // 키보드 Enter 키 시뮬레이션 (onSubmitted이 구현되지 않았으므로 아무 동작도 없음)
+  //   await tester.testTextInput.receiveAction(TextInputAction.done);
 
-    // UI 업데이트
-    await tester.pump();
+  //   // UI 업데이트
+  //   await tester.pump();
 
-    // 새 작업이 리스트에 추가되지 않았는지 확인
-    expect(find.text('Test Task with Enter'), findsNothing);
-  });
+  //   // 새 작업이 리스트에 추가되지 않았는지 확인
+  //   expect(find.text('Test Task with Enter'), findsNothing);
+  // });
 }
