@@ -1,19 +1,14 @@
 pipeline {
     agent any
 
-    environment {
-        FLUTTER_HOME = '/opt/flutter' // Flutter 설치 경로
-        ANDROID_HOME = '/opt/android-sdk' // Android SDK 설치 경로
-        PATH = "${FLUTTER_HOME}/bin:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools:$PATH"
-    }
-
     stages {
         stage('Setup') {
             steps {
                 echo 'Setting up environment...'
-                // Flutter 및 Android SDK 버전 확인
+                // Git 안전 디렉토리 추가
+                sh 'git config --global --add safe.directory /opt/flutter'
+                // Flutter 버전 확인
                 sh 'flutter --version'
-                sh 'flutter doctor'
             }
         }
 
