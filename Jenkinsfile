@@ -1,13 +1,15 @@
 pipeline {
     agent any
 
+    environment {
+        FLUTTER_HOME = '/opt/flutter'
+        PATH = "${FLUTTER_HOME}/bin:${env.PATH}"
+    }
+
     stages {
         stage('Setup') {
             steps {
                 echo 'Setting up environment...'
-                // Git 안전 디렉토리 추가
-                sh 'git config --global --add safe.directory /opt/flutter'
-                // Flutter 버전 확인
                 sh 'flutter --version'
             }
         }
@@ -15,7 +17,6 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                // Flutter 테스트 실행
                 sh 'flutter test'
             }
         }
