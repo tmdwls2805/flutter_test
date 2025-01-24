@@ -17,32 +17,34 @@ pipeline {
         stage('Validate Event and Branch') {
             steps {
                 script {
-                    // 현재 브랜치 이름 가져오기
-                    def branchName = sh(returnStdout: true, script: "git rev-parse --abbrev-ref HEAD").trim()
+                    // GIT_BRANCH 환경 변수 활용
+                    def branchName = env.GIT_BRANCH ?: 'unknown'
 
-                    // GitHub Webhook 이벤트에서 PR인지 PUSH인지 확인
-                    def isPullRequest = env.CHANGE_ID != null
-
-                    if (isPullRequest) {
-                        echo "Triggered by Pull Request: Target branch is '${env.CHANGE_TARGET}', Source branch is '${env.CHANGE_BRANCH}'."
-                        if (env.CHANGE_TARGET != 'master') {
-                            error "Build skipped: Pull Request target is not 'master'."
-                        }
-                    } else {
-                        echo "Triggered by Push: Current branch is '${branchName}'."
-                        if (branchName != 'master') {
-                            error "Build skipped: Push branch is not 'master'."
-                        }
+                    // 'origin/' 제거 (필요한 경우)
+                    if (branchName.startsWith('origin/')) {
+                        branchName = branchName.replace('origin/', '')
                     }
 
-                    echo "Validation passed. Proceeding with build..."
+                    echo "Triggered by branch: ${branchName}"
+
+                    // master 브랜치 확인
+                    if (branchName != 'master') {
+                        error "Build skipped: Current branch is '${branchName}', not 'master'."
+                    }
                 }
             }
         }
 
         stage('Checkout Code') {
             steps {
-                checkout scm
+                // 명시적으로 master 브랜치를 체크아웃
+                script {
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: '*/master']],
+                        userRemoteConfigs: [[url: 'https://github.com/tmdwls2805/flutter_test.git']]
+                    ])
+                }
             }
         }
 
