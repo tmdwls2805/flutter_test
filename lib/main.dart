@@ -21,7 +21,7 @@ class ToDoScreen extends StatefulWidget {
 class _ToDoScreenState extends State<ToDoScreen> {
   List<String> todos = [];
   TextEditingController controller = TextEditingController();
-
+  //  새 작업 추가
   void addTodo() {
     setState(() {
       todos.add(controller.text);
