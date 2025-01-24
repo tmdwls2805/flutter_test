@@ -27,9 +27,9 @@ pipeline {
 
                     echo "Triggered by branch: ${branchName}"
 
-                    // master 브랜치 확인
-                    if (branchName != 'master') {
-                        error "Build skipped: Current branch is '${branchName}', not 'master'."
+                    // master 또는 develop 브랜치 확인
+                    if (branchName != 'master' && branchName != 'develop') {
+                        error "Build skipped: Current branch is '${branchName}', not 'master' or 'develop'."
                     }
                 }
             }
@@ -37,11 +37,18 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                // 명시적으로 master 브랜치를 체크아웃
+                // 현재 브랜치 체크아웃
                 script {
+                    def branchName = env.GIT_BRANCH ?: 'unknown'
+
+                    // 'origin/' 제거 (필요한 경우)
+                    if (branchName.startsWith('origin/')) {
+                        branchName = branchName.replace('origin/', '')
+                    }
+
                     checkout([
                         $class: 'GitSCM',
-                        branches: [[name: '*/master']],
+                        branches: [[name: "*/${branchName}"]],
                         userRemoteConfigs: [[url: 'https://github.com/tmdwls2805/flutter_test.git']]
                     ])
                 }
